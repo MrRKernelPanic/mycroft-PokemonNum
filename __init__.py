@@ -84,7 +84,7 @@ class PokemonNumSkill(MycroftSkill):
         i2c = busio.I2C(board.SCL, board.SDA)
         lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
         lcd.color = [100, 0, 0]
-        lcd.message = "Hello\nCircuitPython"
+        lcd.message = "\nPokemon:" + str(num)
         lcd.message = str(pokemon_name)
         #Get the Pokemon Type
         response = requests.get("https://pokeapi.co/api/v2/pokemon/"+str(num)+"/")
