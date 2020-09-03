@@ -48,8 +48,8 @@ class PokemonNumSkill(MycroftSkill):
         for i in range(151):  # numbers 0 to 100
             self.register_vocabulary(str(i), 'Numz')
         # To prevent beeping while listening
-        lcd.color = [55, 0, 55]
-        lcd.message = "Hello\nCircuitPython"
+        #lcd.color = [55, 0, 55]
+        #lcd.message = "Hello\nCircuitPython"
       
     ######################################################################
     # INTENT HANDLERS
