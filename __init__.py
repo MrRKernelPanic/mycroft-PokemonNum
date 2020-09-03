@@ -108,9 +108,7 @@ class PokemonNumSkill(MycroftSkill):
     @intent_handler(IntentBuilder("pokemon.number").require("Pokemon").require("Number")
     def handle_pokemon_number(self, message):
         """Common handler for start_timer intents."""
-        utt = message.data["utterance"]
-        # GET TIMER DURATION
-        num,nuthin = self._extract_ordinal(utt)
+        num = extract_number(message.data['utterance'])
         lcd.message = num
         #self.speak_dialog(dialog,n})
         # Start showing the remaining time on the faceplate
