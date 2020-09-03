@@ -138,7 +138,7 @@ class PokemonNumSkill(MycroftSkill):
 
         disp = st7735.ST7735R(
             spi, 
-            rotation=0, 
+            rotation=270, 
             height=128, 
             x_offset=2, 
             y_offset=3,
@@ -167,7 +167,7 @@ class PokemonNumSkill(MycroftSkill):
         disp.image(image)
         
         #image = Image.open("blinka.jpg")
-        url= 'https://pokeres.bastionbot.org/images/pokemon/255.png'
+        url= 'https://pokeres.bastionbot.org/images/pokemon/'+str(num)+'.png'
         myfile = requests.get(url)
         open ('temp.png','wb').write(myfile.content)
         image = Image.open('temp.png')
