@@ -31,18 +31,21 @@ from mycroft.util import play_wav
 from mycroft.util.format import pronounce_number, join_list
 from mycroft.util.parse import extract_number
 
+
 class PokemonNumSkill(MycroftSkill):
     
+    lcd_columns = 16
+    lcd_rows = 2
+    i2c = busio.I2C(board.SCL, board.SDA)
+    lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
+    lcd.color = [55, 0, 55]
+    lcd.message = "Hello\nCircuitPython"
+
     def __init__(self):
         super(PokemonNumSkill, self).__init__("PokemonNumSkill")
         #self.sound_file = join(abspath(dirname(__file__)), 'snd','twoBeep.wav')
         #self.threshold = 0.7
-        lcd_columns = 16
-        lcd_rows = 2
-        i2c = busio.I2C(board.SCL, board.SDA)
-        lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
-        lcd.color = [55, 0, 55]
-        lcd.message = "Hello\nCircuitPython"
+      
     
     def initialize(self):
         for i in range(808):  # numbers 0 to 100
@@ -72,7 +75,7 @@ class PokemonNumSkill(MycroftSkill):
         pokemon_name=json.dumps(nme, sort_keys=True, indent=4)
         #pokemon_name=pokemon_name.strip('\"')
         self.speak_dialog('list.pokemon.name', data={"title": pokemon_name})
-        self.lcd.message = pokemon_name
+        lcd.message = pokemon_name
         #Get the Pokemon Type
         response = requests.get("https://pokeapi.co/api/v2/pokemon/"+str(num)+"/")
         types=response.json()["types"]
