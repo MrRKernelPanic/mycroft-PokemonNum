@@ -70,7 +70,7 @@ class PokemonNumSkill(MycroftSkill):
         #pokemon_name=self.__jprint(self, nme)
         pokemon_name=json.dumps(nme, sort_keys=True, indent=4)
         pokemon_name=pokemon_name.strip('\"')
-        self.speak_dialog('list.pokemon.name', data={'title': num})
+        self.speak_dialog('list.pokemon.name', data={'title': pokemon_name})
         #self.speak_dialog(dialog,n})
         # Start showing the remaining time on the faceplate
                     
