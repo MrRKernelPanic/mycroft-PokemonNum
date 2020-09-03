@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import requests
-import json
+#import json
 #import board
 #import busio
 #import adafruit_character_lcd.character_lcd_rgb_i2c as character_lcd
@@ -60,7 +60,23 @@ class PokemonNumSkill(MycroftSkill):
         num = extract_number(message.data['utterance'])
         #lcd.message = num
         self.speak_dialog('list.pokemon.number', data={'level': num})
-        response = requests.get("https://pokeapi.co/api/v2/pokemon-form/"+num+"/")
+ 
+
+
+#        try:
+#
+#            # get requested data
+#            r = requests.get(api_url)
+#      
+#            # check if we got any data before setting return value
+#            retVal = r.json()['data'] if len(r.json()['data']) > 0 else None
+#      
+#        except:
+#
+#            # set error flag
+#            self.serverError = True
+
+        response = requests.get("https://pokeapi.co/api/v2/pokemon-form/"+int(num)+"/")
         #print(response.status_code)
         #jprint(response.json())
         nme=response.json()["name"]
