@@ -58,27 +58,12 @@ class PokemonNumSkill(MycroftSkill):
                     .optionally("Number")
                     .require("Numz"))
     def handle_pokemon_number(self, message):
-        """Common handler for start_timer intents."""
+        """Tells the user what it's searching for"""
         num = extract_number(message.data['utterance'])
         #lcd.message = num
         self.speak_dialog('list.pokemon.number', data={'level': num})             
 
- 
-
-
-#        try:
-#
-#            # get requested data
-#            r = requests.get(api_url)
-#      
-#            # check if we got any data before setting return value
-#            retVal = r.json()['data'] if len(r.json()['data']) > 0 else None
-#      
-#        except:
-#
-#            # set error flag
-#            self.serverError = True
-
+        #Tells the user the Pokemon
         resp = requests.get("https://pokeapi.co/api/v2/pokemon-form/"+str(num)+"/")
         #print(response.status_code)
         #jprint(response.json())
@@ -87,6 +72,27 @@ class PokemonNumSkill(MycroftSkill):
         pokemon_name=json.dumps(nme, sort_keys=True, indent=4)
         #pokemon_name=pokemon_name.strip('\"')
         self.speak_dialog('list.pokemon.name', data={"title": pokemon_name})
+
+        #Get the Pokemon Type
+        response = requests.get("https://pokeapi.co/api/v2/pokemon/"+str(num)+"/")
+        types=response.json()["types"]
+        ttyp=[]
+        typ=[]
+        #gets the details of all the types in ttyp list
+        for d in types:
+            temp=d["type"]
+            ttyp.append(temp)
+        #gets the names of the types in typ list.
+        for d in ttyp:
+            temp=d["name"]
+            typ.append(temp)
+
+        pokemon_type=""
+        for i in range(0,len(typ)): 
+            pokemon_type=pokemon_type + typ[i] + " and "
+        pokemon_type = pokemon_type[:-5] + " Type"
+        self.speak_dialog('list.pokemon.type', data={"typee": pokemon_type})    
+                
         #self.speak_dialog(dialog,n})
         # Start showing the remaining time on the faceplate
     # Handles custom start phrases eg "ping me in 5 minutes"
