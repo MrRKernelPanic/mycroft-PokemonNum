@@ -67,18 +67,19 @@ class PokemonNumSkill(MycroftSkill):
         #print(response.status_code)
         #jprint(response.json())
         nme=response.json()["name"]
-        pokemon_name=self.__jprint(self, nme)
+        #pokemon_name=self.__jprint(self, nme)
+        pokemon_name=json.dumps(nme, sort_keys=True, indent=4)
         self.speak_dialog('list.pokemon.name', data={'title': num})
         #self.speak_dialog(dialog,n})
         # Start showing the remaining time on the faceplate
                     
     # Handles custom start phrases eg "ping me in 5 minutes"
     # Also over matches Common Play for "start timer" utterances
-    def __jprint(self, obj):
-        # create a formatted string of the Python JSON object
-        text = json.dumps(obj, sort_keys=True, indent=4)
-        #print(text)
-        return text 
+    #def __jprint(self, obj):
+    #    # create a formatted string of the Python JSON object
+    #    text = json.dumps(obj, sort_keys=True, indent=4)
+    #    #print(text)
+    #    return text 
     
     def stop(self):
         pass
