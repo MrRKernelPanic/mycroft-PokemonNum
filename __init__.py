@@ -20,7 +20,7 @@ import re
 from os.path import join, isfile, abspath, dirname
 from num2words import num2words
 from adapt.intent import IntentBuilder
-from mycroft.audio import wait_while_speaking, is_speaking
+from mycroft.audio import wait_while_speaking
 from mycroft.messagebus.message import Message
 from mycroft.skills.core import (
     MycroftSkill,
@@ -28,15 +28,8 @@ from mycroft.skills.core import (
     intent_file_handler)
 from mycroft.util import play_wav
 from mycroft.util.format import pronounce_number, join_list
-from mycroft.util.parse import extract_number, fuzzy_match
+from mycroft.util.parse import extract_number
 from mycroft.util.time import now_local
-
-try:
-    from mycroft.skills.skill_data import to_alnum
-except ImportError:
-    from mycroft.skills.skill_data import to_letters as to_alnum
-
-from .util.bus import wait_for_message
 
 class PokemonNumSkill(MycroftSkill):
     def __init__(self):
