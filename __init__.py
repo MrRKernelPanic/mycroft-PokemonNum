@@ -91,7 +91,17 @@ class PokemonNumSkill(MycroftSkill):
         for i in range(0,len(typ)): 
             pokemon_type=pokemon_type + typ[i] + " and "
         pokemon_type = pokemon_type[:-5] + " Type"
-        self.speak_dialog('list.pokemon.type', data={"typee": pokemon_type})    
+        self.speak_dialog('list.pokemon.type', data={"typee": pokemon_type})   
+        
+        #Get the Pokemon Description
+        response = requests.get("https://pokeapi.co/api/v2/pokemon-species/"+str(num)+"/")
+        descriptions=response.json()["flavor_text_entries"]
+        descripts= []
+        for d in descriptions:
+            temp = d["flavor_text"]
+            descripts.append(temp)
+        pokemon_description = str(descripts[0])
+        self.speak_dialog('list.pokemon.description', data={"desc": pokemon_description})
                 
         #self.speak_dialog(dialog,n})
         # Start showing the remaining time on the faceplate
