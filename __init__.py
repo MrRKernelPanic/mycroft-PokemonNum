@@ -215,7 +215,7 @@ class PokemonNumSkill(MycroftSkill):
                     .require("Namez"))
     def handle_pokemon_name(self, message):
         """Tells the user what it's searching for"""
-        nme_str = message.data.get('Namez', default)
+        nme_str = message.data.get('Namez')
         #nme = (message.data['utterance'])
         #lcd.message = num
         self.speak_dialog('list.pokemon.number', data={'level': nme_str})             
