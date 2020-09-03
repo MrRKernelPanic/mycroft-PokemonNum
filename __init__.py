@@ -222,9 +222,11 @@ class PokemonNumSkill(MycroftSkill):
         names=response.json()["results"]
         #print (d)
         for d in names:
-            if str(d['name']) == str(nme):
-            temp=str(d['url']).split("/")
-        self.speak_dialog('list.pokemon.number', data={'level': temp[6]})
+            if str(d['name']) in utterance:
+                self.speak('Found it')
+            #if str(d['name']) == str(nme):
+            #temp=str(d['url']).split("/")
+        #self.speak_dialog('list.pokemon.number', data={'level': temp[6]})
     
     
     def update_disply(num,pokemon_name):
