@@ -211,6 +211,16 @@ class PokemonNumSkill(MycroftSkill):
     #    #print(text)
     #    return text 
 
+    @intent_handler(IntentBuilder("PokemonName").require("Pokemon")
+                    .require("Namez"))
+    def handle_pokemon_name(self, message):
+        """Tells the user what it's searching for"""
+        name = (message.data['utterance'])
+        #lcd.message = num
+        self.speak_dialog('list.pokemon.number', data={'level': name})             
+ 
+    
+    
     def update_disply(num,pokemon_name):
         lcd_columns = 16
         lcd_rows = 2
