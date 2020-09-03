@@ -14,9 +14,9 @@
 
 import requests
 import json
-#import board
-#import busio
-#import adafruit_character_lcd.character_lcd_rgb_i2c as character_lcd
+import board
+import busio
+import adafruit_character_lcd.character_lcd_rgb_i2c as character_lcd
 
 from os.path import join, isfile, abspath, dirname
 #from num2words import num2words
@@ -39,15 +39,15 @@ class PokemonNumSkill(MycroftSkill):
         #self.threshold = 0.7
         lcd_columns = 16
         lcd_rows = 2
-       # i2c = busio.I2C(board.SCL, board.SDA)
-       # lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
+        i2c = busio.I2C(board.SCL, board.SDA)
+        lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
 
     def initialize(self):
         for i in range(151):  # numbers 0 to 100
             self.register_vocabulary(str(i), 'Numz')
         # To prevent beeping while listening
-        #lcd.color = [55, 0, 55]
-        #lcd.message = "Hello\nCircuitPython"
+        lcd.color = [55, 0, 55]
+        lcd.message = "Hello\nCircuitPython"
       
     ######################################################################
     # INTENT HANDLERS
