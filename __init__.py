@@ -77,7 +77,7 @@ class PokemonNumSkill(MycroftSkill):
         pokemon_name=json.dumps(nme, sort_keys=True, indent=4)
         #pokemon_name=pokemon_name.strip('\"')
         self.speak_dialog('list.pokemon.name', data={"title": pokemon_name})
-        lcd.message = pokemon_name
+        lcd.message = str(pokemon_name)
         #Get the Pokemon Type
         response = requests.get("https://pokeapi.co/api/v2/pokemon/"+str(num)+"/")
         types=response.json()["types"]
