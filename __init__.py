@@ -37,11 +37,11 @@ from mycroft.util import play_wav
 from mycroft.util.format import pronounce_number, join_list
 from mycroft.util.parse import extract_number
 
-#lcd_columns = 16
-#lcd_rows = 2
-#i2c = busio.I2C(board.SCL, board.SDA)
-#lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
-#lcd.color = [55, 0, 55]
+lcd_columns = 16
+lcd_rows = 2
+i2c = busio.I2C(board.SCL, board.SDA)
+lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
+lcd.color = [55, 0, 55]
 #lcd.message = "Hello\nCircuitPython"
 
 
@@ -85,10 +85,10 @@ class PokemonNumSkill(MycroftSkill):
         #pokemon_name=pokemon_name.strip('\"')
         self.speak_dialog('list.pokemon.name', data={"title": pokemon_name})
         #lcd.message = '\nPokemon:' + str(num) 
-        lcd_columns = 16
-        lcd_rows = 2
-        i2c = busio.I2C(board.SCL, board.SDA)
-        lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
+ #       lcd_columns = 16
+ #       lcd_rows = 2
+ #       i2c = busio.I2C(board.SCL, board.SDA)
+ #       lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
         lcd.color = [100, 0, 0]
         lcd.message = "\nPokemon:" + str(num)
         lcd.message = str(pokemon_name).strip('\"')
