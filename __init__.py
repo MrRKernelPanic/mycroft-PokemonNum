@@ -45,7 +45,7 @@ class PokemonNumSkill(MycroftSkill):
         lcd.message = "Hello\nCircuitPython"
     
     def initialize(self):
-        for i in range(900):  # numbers 0 to 100
+        for i in range(808):  # numbers 0 to 100
             self.register_vocabulary(str(i), 'Numz')
         # To prevent beeping while listening
         #lcd.color = [55, 0, 55]
@@ -72,7 +72,7 @@ class PokemonNumSkill(MycroftSkill):
         pokemon_name=json.dumps(nme, sort_keys=True, indent=4)
         #pokemon_name=pokemon_name.strip('\"')
         self.speak_dialog('list.pokemon.name', data={"title": pokemon_name})
-
+        self.lcd.message = pokemon_name
         #Get the Pokemon Type
         response = requests.get("https://pokeapi.co/api/v2/pokemon/"+str(num)+"/")
         types=response.json()["types"]
@@ -100,7 +100,7 @@ class PokemonNumSkill(MycroftSkill):
         for d in descriptions:
             temp = d["flavor_text"]
             descripts.append(temp)
-        pokemon_description = str(descripts[0])
+        pokemon_description = str(descripts[7])
         self.speak_dialog('list.pokemon.description', data={"desc": pokemon_description})
                 
         #self.speak_dialog(dialog,n})
