@@ -61,7 +61,7 @@ class PokemonNumSkill(MycroftSkill):
         """Common handler for start_timer intents."""
         num = extract_number(message.data['utterance'])
         #lcd.message = num
-        self.speak_dialog('list.pokemon.number', data={'level': num})
+       
  
 
 
@@ -88,7 +88,7 @@ class PokemonNumSkill(MycroftSkill):
         #self.speak_dialog('list.pokemon.name', data={"title": pokemon_name})
         #self.speak_dialog(dialog,n})
         # Start showing the remaining time on the faceplate
-                    
+        self.speak_dialog('list.pokemon.number', data={'level': num})             
     # Handles custom start phrases eg "ping me in 5 minutes"
     # Also over matches Common Play for "start timer" utterances
     #def __jprint(self, obj):
