@@ -43,45 +43,29 @@ class PokemonNumSkill(MycroftSkill):
         super(PokemonNumSkill, self).__init__("PokemonNumSkill")
         #self.sound_file = join(abspath(dirname(__file__)), 'snd','twoBeep.wav')
         self.threshold = 0.7
-
-    def initialize(self):
-         for i in range(151):  # numbers 0 to 100
-            self.register_vocabulary(str(i) +, 'Numz')
-        # To prevent beeping while listening
         lcd_columns = 16
         lcd_rows = 2
         i2c = busio.I2C(board.SCL, board.SDA)
         lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
+
+    def initialize(self):
+        for i in range(151):  # numbers 0 to 100
+            self.register_vocabulary(str(i) +, 'Numz')
+        # To prevent beeping while listening
         lcd.color = [55, 0, 55]
         lcd.message = "Hello\nCircuitPython"
 
-    
-    @staticmethod
-    def _fuzzy_match_word_from_phrase(word, phrase, threshold):
-        matched = False
-        score = 0
-        phrase_split = phrase.split(' ')
-        word_split_len = len(word.split(' '))
-
-        for i in range(len(phrase_split) - word_split_len, -1, -1):
-            phrase_comp = ' '.join(phrase_split[i:i + word_split_len])
-            score_curr = fuzzy_match(phrase_comp, word.lower())
-
-            if score_curr > score and score_curr >= threshold:
-                score = score_curr
-                matched = True
-
-        return matched
-
-    
     ######################################################################
     # INTENT HANDLERS
 
-    @intent_handler(IntentBuilder("pokemon.number").require("Pokemon").require("Number").require("Numz")
+    @intent_handler(IntentBuilder("PokemonNumber").require("Pokemon")
+                    .optionally("Number")
+                    .require("Numz")
     def handle_pokemon_number(self, message):
         """Common handler for start_timer intents."""
-        num = extract_number(message.data['utterance'])
+        num = eextract_number(message.data['utterance'])
         lcd.message = num
+        self.speak_dialog('list.pokemon.number', data={'level': num})
         #self.speak_dialog(dialog,n})
         # Start showing the remaining time on the faceplate
                     
