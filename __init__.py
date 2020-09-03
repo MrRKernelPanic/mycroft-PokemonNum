@@ -223,7 +223,7 @@ class PokemonNumSkill(MycroftSkill):
         names=response.json()["results"]
         #print (d)
         for d in names:
-            if str(d['name']) in utterance:
+            if str(d['name']) == nme_str:
                 #self.speak('Found it')
             #if str(d['name']) == str(nme):
                 temp=str(d['url']).split("/")
