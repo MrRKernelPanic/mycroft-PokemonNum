@@ -41,7 +41,9 @@ class PokemonNumSkill(MycroftSkill):
         lcd_rows = 2
         i2c = busio.I2C(board.SCL, board.SDA)
         lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
-
+        lcd.color = [55, 0, 55]
+        lcd.message = "Hello\nCircuitPython"
+    
     def initialize(self):
         for i in range(151):  # numbers 0 to 100
             self.register_vocabulary(str(i), 'Numz')
