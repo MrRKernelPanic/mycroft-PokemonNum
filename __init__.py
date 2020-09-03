@@ -18,6 +18,12 @@ import board
 import busio
 import adafruit_character_lcd.character_lcd_rgb_i2c as character_lcd
 
+import digitalio
+from PIL import Image, ImageDraw
+import adafruit_rgb_display.st7735 as st7735  # pylint: disable=unused-import
+import requests
+
+
 from os.path import join, isfile, abspath, dirname
 #from num2words import num2words
 from adapt.intent import IntentBuilder
@@ -113,9 +119,80 @@ class PokemonNumSkill(MycroftSkill):
         for d in descriptions:
             temp = d["flavor_text"]
             descripts.append(temp)
-        pokemon_description = str(descripts[7])
+        pokemon_description = str(descripts[14])
         self.speak_dialog('list.pokemon.description', data={"desc": pokemon_description})
-                
+        
+        # Configuration for CS and DC pins (these are PiTFT defaults):
+        cs_pin = digitalio.DigitalInOut(board.CE0)
+        dc_pin = digitalio.DigitalInOut(board.D17)
+        reset_pin = digitalio.DigitalInOut(board.D4)
+
+        # Config for display baudrate (default max is 24mhz):
+        BAUDRATE = 24000000
+
+        # Setup SPI bus using hardware SPI:
+        spi = board.SPI()
+
+        # pylint: disable=line-too-long
+        # Create the display:
+
+        disp = st7735.ST7735R(
+            spi, 
+            rotation=0, 
+            height=128, 
+            x_offset=2, 
+            y_offset=3,
+            cs=cs_pin,
+            dc=dc_pin,
+            rst=reset_pin,
+            baudrate=BAUDRATE,
+        )
+        # pylint: enable=line-too-long
+        
+        # Create blank image for drawing.
+        # Make sure to create image with mode 'RGB' for full color.
+        if disp.rotation % 180 == 90:
+            height = disp.width  # we swap height/width to rotate it to landscape!
+            width = disp.height
+        else:
+            width = disp.width  # we swap height/width to rotate it to landscape!
+            height = disp.height
+        image = Image.new("RGB", (width, height))
+        
+        # Get drawing object to draw on image.
+        draw = ImageDraw.Draw(image)
+        
+        # Draw a black filled box to clear the image.
+        draw.rectangle((0, 0, width, height), outline=0, fill=(0, 0, 0))
+        disp.image(image)
+        
+        #image = Image.open("blinka.jpg")
+        url= 'https://pokeres.bastionbot.org/images/pokemon/255.png'
+        myfile = requests.get(url)
+        open ('temp.png','wb').write(myfile.content)
+        image = Image.open('temp.png')
+        
+        # Scale the image to the smaller screen dimension
+        image_ratio = image.width / image.height
+        screen_ratio = width / height
+        if screen_ratio < image_ratio:
+            scaled_width = image.width * height // image.height
+            scaled_height = height
+        else:
+            scaled_width = width
+            scaled_height = image.height * width // image.width
+        image = image.resize((scaled_width, scaled_height), Image.BICUBIC)
+        
+        # Crop and center the image
+        x = scaled_width // 2 - width // 2
+        y = scaled_height // 2 - height // 2
+        image = image.crop((x, y, x + width, y + height))
+        
+        # Display image.
+        disp.image(image)
+
+              
+        
         #self.speak_dialog(dialog,n})
         # Start showing the remaining time on the faceplate
     # Handles custom start phrases eg "ping me in 5 minutes"
