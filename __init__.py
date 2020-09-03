@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import re
+import requests
+import json
 #import board
 #import busio
 #import adafruit_character_lcd.character_lcd_rgb_i2c as character_lcd
@@ -29,10 +30,6 @@ from mycroft.skills.core import (
 from mycroft.util import play_wav
 from mycroft.util.format import pronounce_number, join_list
 from mycroft.util.parse import extract_number
-from mycroft.util.time import now_local
-
-import requests
-import json
 
 class PokemonNumSkill(MycroftSkill):
     
