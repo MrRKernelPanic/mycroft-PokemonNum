@@ -42,7 +42,7 @@ lcd_rows = 2
 i2c = busio.I2C(board.SCL, board.SDA)
 lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
 lcd.color = [55, 0, 55]
-#lcd.message = "Hello\nCircuitPython"
+lcd.message = "Hello\nCircuitPython"
 
 
 class PokemonNumSkill(MycroftSkill):
@@ -89,9 +89,12 @@ class PokemonNumSkill(MycroftSkill):
  #       lcd_rows = 2
  #       i2c = busio.I2C(board.SCL, board.SDA)
  #       lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
-        lcd.color = [100, 0, 0]
-        lcd.message = "\nPokemon:" + str(num)
-        lcd.message = str(pokemon_name).strip('\"')
+ #       lcd.color = [100, 0, 0]
+ #       lcd.message = "\nPokemon:" + str(num)
+ #       lcd.message = str(pokemon_name).strip('\"')
+        
+        update_display(num,pokemon_name)
+    
         #Get the Pokemon Type
         response = requests.get("https://pokeapi.co/api/v2/pokemon/"+str(num)+"/")
         types=response.json()["types"]
@@ -202,6 +205,16 @@ class PokemonNumSkill(MycroftSkill):
     #    text = json.dumps(obj, sort_keys=True, indent=4)
     #    #print(text)
     #    return text 
+
+    def update_disply(num,pokemon_name):
+         
+        lcd_columns = 16
+        lcd_rows = 2
+        i2c = busio.I2C(board.SCL, board.SDA)
+        lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
+        lcd.color = [100, 0, 0]
+        lcd.message = "\nPokemon:" + str(num)
+        lcd.message = str(pokemon_name).strip('\"')
     
     def stop(self):
         pass
