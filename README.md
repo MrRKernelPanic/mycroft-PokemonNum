@@ -1,4 +1,4 @@
-# <img src='https://raw.githack.com/FortAwesome/Font-Awesome/master/svgs/solid/stopwatch.svg' card_color='#40DBB0' width='50' height='50' style='vertical-align:bottom'/> Timer
+# <img src='https://raw.githack.com/FortAwesome/Font-Awesome/master/svgs/solid/stopwatch.svg' card_color='#40DBB0' width='50' height='50' style='vertical-align:bottom'/> Pokemon Number!
 Hopefully return information about pokemon from pokedex number.
 
 ## About 
