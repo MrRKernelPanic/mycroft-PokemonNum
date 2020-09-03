@@ -18,7 +18,7 @@ import re
 #import adafruit_character_lcd.character_lcd_rgb_i2c as character_lcd
 
 from os.path import join, isfile, abspath, dirname
-from num2words import num2words
+#from num2words import num2words
 from adapt.intent import IntentBuilder
 from mycroft.audio import wait_while_speaking
 from mycroft.messagebus.message import Message
@@ -32,10 +32,11 @@ from mycroft.util.parse import extract_number
 from mycroft.util.time import now_local
 
 class PokemonNumSkill(MycroftSkill):
+    
     def __init__(self):
         super(PokemonNumSkill, self).__init__("PokemonNumSkill")
         #self.sound_file = join(abspath(dirname(__file__)), 'snd','twoBeep.wav')
-        self.threshold = 0.7
+        #self.threshold = 0.7
         lcd_columns = 16
         lcd_rows = 2
        # i2c = busio.I2C(board.SCL, board.SDA)
@@ -43,7 +44,7 @@ class PokemonNumSkill(MycroftSkill):
 
     def initialize(self):
         for i in range(151):  # numbers 0 to 100
-            self.register_vocabulary(str(i) +, 'Numz')
+            self.register_vocabulary(str(i), 'Numz')
         # To prevent beeping while listening
         #lcd.color = [55, 0, 55]
         #lcd.message = "Hello\nCircuitPython"
@@ -53,7 +54,7 @@ class PokemonNumSkill(MycroftSkill):
 
     @intent_handler(IntentBuilder("PokemonNumber").require("Pokemon")
                     .optionally("Number")
-                    .require("Numz")
+                    .require("Numz"))
     def handle_pokemon_number(self, message):
         """Common handler for start_timer intents."""
         num = eextract_number(message.data['utterance'])
