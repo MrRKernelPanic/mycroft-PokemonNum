@@ -69,7 +69,7 @@ class PokemonNumSkill(MycroftSkill):
         num = extract_number(message.data['utterance'])
         #lcd.message = num
         self.speak_dialog('list.pokemon.number', data={'level': num})
-        response = requests.get("https://pokeapi.co/api/v2/pokemon-form/"+number+"/")
+        response = requests.get("https://pokeapi.co/api/v2/pokemon-form/"+num+"/")
         #print(response.status_code)
         #jprint(response.json())
         nme=response.json()["name"]
