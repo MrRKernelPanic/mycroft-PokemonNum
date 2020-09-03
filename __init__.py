@@ -215,10 +215,16 @@ class PokemonNumSkill(MycroftSkill):
                     .require("Namez"))
     def handle_pokemon_name(self, message):
         """Tells the user what it's searching for"""
-        name = (message.data['utterance'])
+        nme = (message.data['utterance'])
         #lcd.message = num
-        self.speak_dialog('list.pokemon.number', data={'level': name})             
- 
+        self.speak_dialog('list.pokemon.number', data={'level': nme})             
+        response = requests.get("http://pokeapi.co/api/v2/pokemon?limit=807")
+        names=response.json()["results"]
+        #print (d)
+        for d in names:
+            if str(d['name']) == str(nme):
+            temp=str(d['url']).split("/")
+        self.speak_dialog('list.pokemon.number', data={'level': temp[6]})
     
     
     def update_disply(num,pokemon_name):
