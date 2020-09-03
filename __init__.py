@@ -45,6 +45,8 @@ class PokemonNumSkill(MycroftSkill):
         self.threshold = 0.7
 
     def initialize(self):
+         for i in range(151):  # numbers 0 to 100
+            self.register_vocabulary(str(i) +, 'Numz')
         # To prevent beeping while listening
         lcd_columns = 16
         lcd_rows = 2
@@ -53,37 +55,7 @@ class PokemonNumSkill(MycroftSkill):
         lcd.color = [55, 0, 55]
         lcd.message = "Hello\nCircuitPython"
 
-    def _extract_ordinal(self, text):
-        """Extract ordinal from text.
-
-        Remove once extract_number supports short ordinal format eg '2nd'
-        """
-        num = None
-        if text is None or len(text) == 0:
-            return None
-
-        try:
-            num = extract_number(text, self.lang, ordinals=True)
-            # attempt to remove extracted ordinal
-            spoken_ord = num2words(int(num), to="ordinal", lang=self.lang)
-            utt = text.replace(spoken_ord,"")
-        except:
-            self.log.debug('_extract_ordinal: Error in extract_number method')
-            pass
-        if not num:
-            try:
-                # Should be removed if the extract_number() function can
-                # parse ordinals already e.g. 1st, 3rd, 69th, etc.
-                regex = re.compile(r'\b((?P<Numeral>\d+)(st|nd|rd|th))\b')
-                result = re.search(regex, text)
-                if result and (result['Numeral']):
-                    num = result['Numeral']
-                    utt = text.replace(result, "")
-            except:
-                self.log.debug('_extract_ordinal: Error in regex search')
-                pass
-        return int(num), utt
-
+    
     @staticmethod
     def _fuzzy_match_word_from_phrase(word, phrase, threshold):
         matched = False
@@ -105,7 +77,7 @@ class PokemonNumSkill(MycroftSkill):
     ######################################################################
     # INTENT HANDLERS
 
-    @intent_handler(IntentBuilder("pokemon.number").require("Pokemon").require("Number")
+    @intent_handler(IntentBuilder("pokemon.number").require("Pokemon").require("Number").require("Numz")
     def handle_pokemon_number(self, message):
         """Common handler for start_timer intents."""
         num = extract_number(message.data['utterance'])
