@@ -56,6 +56,13 @@ class PokemonNumSkill(MycroftSkill):
     def initialize(self):
         for i in range(808):  # numbers 0 to 100
             self.register_vocabulary(str(i), 'Numz')
+        response = requests.get("http://pokeapi.co/api/v2/pokemon?limit=807")
+        names=response.json()["results"]
+        for d in names:
+        #This bit gets ALL the pokemon names.
+            self.register_vocabulary(str(d['name']), 'Namez')
+        #This will try matching to the string and print out the Pokeindex
+    
         # To prevent beeping while listening
         #lcd.color = [55, 0, 55]
         #lcd.message = "Hello\nCircuitPython"
