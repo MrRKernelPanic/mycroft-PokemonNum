@@ -45,7 +45,7 @@ class PokemonNumSkill(MycroftSkill):
         lcd.message = "Hello\nCircuitPython"
     
     def initialize(self):
-        for i in range(800):  # numbers 0 to 100
+        for i in range(900):  # numbers 0 to 100
             self.register_vocabulary(str(i), 'Numz')
         # To prevent beeping while listening
         #lcd.color = [55, 0, 55]
