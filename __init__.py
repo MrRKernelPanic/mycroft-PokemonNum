@@ -78,10 +78,10 @@ class PokemonNumSkill(MycroftSkill):
 #            # set error flag
 #            self.serverError = True
 
-        response = requests.get("https://pokeapi.co/api/v2/pokemon-form/"+int(num)+"/")
+        resp = requests.get("https://pokeapi.co/api/v2/pokemon-form/"+int(num)+"/")
         #print(response.status_code)
         #jprint(response.json())
-        nme=response.json()["name"]
+        nme=resp.json()['name']
         #pokemon_name=self.__jprint(self, nme)
         pokemon_name=str(json.dumps(nme, sort_keys=True, indent=4))
         pokemon_name=pokemon_name.strip('\"')
