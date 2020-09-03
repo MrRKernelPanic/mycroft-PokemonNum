@@ -111,11 +111,10 @@ class PokemonNumSkill(MycroftSkill):
         utt = message.data["utterance"]
         # GET TIMER DURATION
         num,nuthin = self._extract_ordinal(utt)
-       
+        lcd.message = num
         #self.speak_dialog(dialog,n})
         # Start showing the remaining time on the faceplate
-    
-   
+                    
     # Handles custom start phrases eg "ping me in 5 minutes"
     # Also over matches Common Play for "start timer" utterances
  
