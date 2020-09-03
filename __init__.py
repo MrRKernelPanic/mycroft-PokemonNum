@@ -57,7 +57,7 @@ class PokemonNumSkill(MycroftSkill):
                     .require("Numz"))
     def handle_pokemon_number(self, message):
         """Common handler for start_timer intents."""
-        num = eextract_number(message.data['utterance'])
+        num = extract_number(message.data['utterance'])
         #lcd.message = num
         self.speak_dialog('list.pokemon.number', data={'level': num})
         #self.speak_dialog(dialog,n})
