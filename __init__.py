@@ -51,7 +51,11 @@ class PokemonNumSkill(MycroftSkill):
         super(PokemonNumSkill, self).__init__("PokemonNumSkill")
         #self.sound_file = join(abspath(dirname(__file__)), 'snd','twoBeep.wav')
         #self.threshold = 0.7
-      
+        self.pokemon_name = ""
+        self.pokemon_number = ""
+        self.pokemon_description = ""
+        self.pokemon_type = ""
+        self.pokemon_image = ""
     
     def initialize(self):
         for i in range(808):  # numbers 0 to 100
@@ -87,33 +91,33 @@ class PokemonNumSkill(MycroftSkill):
     def handle_pokemon_number(self, message):
         """Tells the user what it's searching for"""
         global lcd
-        num = extract_number(message.data['utterance'])
+        self.pokemon_number = extract_number(message.data['utterance'])
         #lcd.message = num
-        self.speak_dialog('list.pokemon.number', data={'level': num})             
+        self.speak_dialog('list.pokemon.number', data={'level': self.pokemon_number})             
         wait_while_speaking()
         
         #Tells the user the Pokemon
-        resp = requests.get("https://pokeapi.co/api/v2/pokemon-form/"+str(num)+"/")
+        resp = requests.get("https://pokeapi.co/api/v2/pokemon-form/"+str(self.pokemon_number)+"/")
         #print(response.status_code)
         #jprint(response.json())
         nme=resp.json()['name']
         #pokemon_name=self.__jprint(self, nme)
-        pokemon_name=json.dumps(nme, sort_keys=True, indent=4)
+        self.pokemon_name=json.dumps(nme, sort_keys=True, indent=4)
         #pokemon_name=pokemon_name.strip('\"')
-        self.speak_dialog('list.pokemon.name', data={"title": pokemon_name})
+        self.speak_dialog('list.pokemon.name', data={"title": self.pokemon_name})
         #lcd.message = '\nPokemon:' + str(num) 
         lcd_columns = 16
         lcd_rows = 2
         i2c = busio.I2C(board.SCL, board.SDA)
         lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
         lcd.color = [100, 0, 0]
-        lcd.message = "\nPokemon:" + str(num)
-        lcd.message = str(pokemon_name).strip('\"')
+        lcd.message = "\nPokemon:" + str(self.pokemon_number)
+        lcd.message = str(self.pokemon_name).strip('\"')
         
  #       update_display(num,pokemon_name)
     
         #Get the Pokemon Type
-        response = requests.get("https://pokeapi.co/api/v2/pokemon/"+str(num)+"/")
+        response = requests.get("https://pokeapi.co/api/v2/pokemon/"+str(self.pokemon_number)+"/")
         types=response.json()["types"]
         ttyp=[]
         typ=[]
@@ -126,12 +130,12 @@ class PokemonNumSkill(MycroftSkill):
             temp=d["name"]
             typ.append(temp)
 
-        pokemon_type=""
+        
         for i in range(0,len(typ)): 
-            pokemon_type=pokemon_type + typ[i] + " and "
-        pokemon_type = pokemon_type[:-5] + " Type"
+            self.pokemon_type=self.pokemon_type + typ[i] + " and "
+        self.pokemon_type = self.pokemon_type[:-5] + " Type"
         wait_while_speaking()
-        self.speak_dialog('list.pokemon.type', data={"typee": pokemon_type})   
+        self.speak_dialog('list.pokemon.type', data={"typee": self.pokemon_type})   
         
         #Get the Pokemon Description
         #descriptions=response.json()["flavor_text_entries"]
@@ -142,7 +146,7 @@ class PokemonNumSkill(MycroftSkill):
         #pokemon_description = str(descripts[14])
 
         def get_description_en(num):
-            response = requests.get("https://pokeapi.co/api/v2/pokemon-species/"+str(num)+"/")
+            response = requests.get("https://pokeapi.co/api/v2/pokemon-species/"+str(self.pokemon_number)+"/")
             descriptions=response.json()["flavor_text_entries"]
             for descriptions_data in descriptions:
                 descr=descriptions_data["flavor_text"]
@@ -152,9 +156,9 @@ class PokemonNumSkill(MycroftSkill):
 #               print (str(descr))
                     return str(descr)          
 
-        pokemon_description = get_description_en(num)
+        self.pokemon_description = get_description_en(self.pokemon_number)
         wait_while_speaking()
-        self.speak_dialog('list.pokemon.description', data={"desc": pokemon_description})
+        self.speak_dialog('list.pokemon.description', data={"desc": self.pokemon_description})
         
         # Configuration for CS and DC pins (these are PiTFT defaults):
         cs_pin = digitalio.DigitalInOut(board.CE0)
@@ -241,10 +245,10 @@ class PokemonNumSkill(MycroftSkill):
                     .require("Namez"))
     def handle_pokemon_name(self, message):
         """Tells the user what it's searching for"""
-        nme_str = message.data.get('Namez')
+        self.pokemon_number = message.data.get('Namez')
         #nme = (message.data['utterance'])
         #lcd.message = num
-        self.speak_dialog('list.pokemon.number', data={'level': nme_str})             
+        self.speak_dialog('list.pokemon.number', data={'level': self.pokemon_number})             
         response = requests.get("http://pokeapi.co/api/v2/pokemon?limit=807")
         names=response.json()["results"]
         #print (d)
@@ -253,6 +257,7 @@ class PokemonNumSkill(MycroftSkill):
                 #self.speak('Found it')
             #if str(d['name']) == str(nme):
                 temp=str(d['url']).split("/")
+                self.pokemon_number=temp[6]
                 self.speak_dialog('list.pokemon.number', data={'level': temp[6]})
     
     
