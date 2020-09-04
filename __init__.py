@@ -80,7 +80,24 @@ class PokemonNumSkill(MycroftSkill):
         self.pokemon_number = extract_number(message.data['utterance'])
         self.speak_dialog('list.pokemon.number', data={'level': self.pokemon_number})             
         wait_while_speaking()
-        
+      
+        #Tells the user the Pokemon
+        resp = requests.get("https://pokeapi.co/api/v2/pokemon-form/"+str(self.pokemon_number)+"/")
+        #print(response.status_code)
+        #jprint(response.json())
+        nme=resp.json()['name']
+        #pokemon_name=self.__jprint(self, nme)
+        pname=json.dumps(nme, sort_keys=True, indent=4)
+        self.pokemon_name = pname
+        #pokemon_name=pokemon_name.strip('\"')
+        self.speak_dialog('list.pokemon.name', data={"title": pname})
+        lcd_columns = 16
+        lcd_rows = 2
+        i2c = busio.I2C(board.SCL, board.SDA)
+        lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
+        lcd.color = [100, 0, 0]
+        lcd.message = "\nPokemon:" + str(num)
+        lcd.message = str(pname).strip('\"')   
   
     
     def stop(self):
