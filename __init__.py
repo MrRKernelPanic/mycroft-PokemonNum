@@ -67,7 +67,7 @@ class PokemonNumSkill(MycroftSkill):
         #lcd.color = [55, 0, 55]
         #lcd.message = "Hello\nCircuitPython"
     
-    def get_description_en(num):
+    def get_description_en(self, num):
         response = requests.get("https://pokeapi.co/api/v2/pokemon-species/"+str(num)+"/")
         descriptions=response.json()["flavor_text_entries"]
         for descriptions_data in descriptions:
@@ -147,7 +147,7 @@ class PokemonNumSkill(MycroftSkill):
         #    temp = d["flavor_text"]
         #    descripts.append(temp)
         #pokemon_description = str(descripts[14])
-        pokemon_description = get_description_en(num)
+        pokemon_description = get_description_en(self, num)
         self.speak_dialog('list.pokemon.description', data={"desc": pokemon_description})
         
         # Configuration for CS and DC pins (these are PiTFT defaults):
