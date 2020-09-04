@@ -79,7 +79,7 @@ class PokemonNumSkill(MycroftSkill):
         """Tells the user what it's searching for"""
         num = extract_number(message.data['utterance'])
         self.pokemon_number = num
-        self.speak_dialog('list.pokemon.number', data={'level': num})             
+        self.speak_dialog('list.pokemon.number', data={'level': self.pokemon_number})             
         wait_while_speaking()
         
   
