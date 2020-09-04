@@ -93,7 +93,7 @@ class PokemonNumSkill(MycroftSkill):
         global lcd
         self.pokemon_number = extract_number(message.data['utterance'])
         #lcd.message = num
-        self.speak_dialog('list.pokemon.number', data={'level': self.pokemon_number})             
+        self.speak_dialog('list.pokemon.number', data={'level': str(self.pokemon_number)})             
         wait_while_speaking()
         
         #Tells the user the Pokemon
@@ -104,7 +104,7 @@ class PokemonNumSkill(MycroftSkill):
         #pokemon_name=self.__jprint(self, nme)
         self.pokemon_name=json.dumps(nme, sort_keys=True, indent=4)
         #pokemon_name=pokemon_name.strip('\"')
-        self.speak_dialog('list.pokemon.name', data={"title": self.pokemon_name})
+        self.speak_dialog('list.pokemon.name', data={"title": str(self.pokemon_name)})
         #lcd.message = '\nPokemon:' + str(num) 
         lcd_columns = 16
         lcd_rows = 2
@@ -135,7 +135,7 @@ class PokemonNumSkill(MycroftSkill):
             self.pokemon_type=self.pokemon_type + typ[i] + " and "
         self.pokemon_type = self.pokemon_type[:-5] + " Type"
         wait_while_speaking()
-        self.speak_dialog('list.pokemon.type', data={"typee": self.pokemon_type})   
+        self.speak_dialog('list.pokemon.type', data={"typee": str(self.pokemon_type)})   
         
         #Get the Pokemon Description
         #descriptions=response.json()["flavor_text_entries"]
@@ -156,9 +156,9 @@ class PokemonNumSkill(MycroftSkill):
 #               print (str(descr))
                     return str(descr)          
 
-        self.pokemon_description = get_description_en(self.pokemon_number)
+        self.pokemon_description = get_description_en(int(self.pokemon_number))
         wait_while_speaking()
-        self.speak_dialog('list.pokemon.description', data={"desc": self.pokemon_description})
+        self.speak_dialog('list.pokemon.description', data={"desc": str(self.pokemon_description)})
         
         # Configuration for CS and DC pins (these are PiTFT defaults):
         cs_pin = digitalio.DigitalInOut(board.CE0)
