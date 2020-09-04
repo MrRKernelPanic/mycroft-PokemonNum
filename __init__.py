@@ -205,8 +205,8 @@ class PokemonNumSkill(MycroftSkill):
         disp.image(image)
         
         #image = Image.open("blinka.jpg")
-        url= 'https://pokeres.bastionbot.org/images/pokemon/'+str(num)+'.png'
-        myfile = requests.get(url)
+        self.pokemon_image = 'https://pokeres.bastionbot.org/images/pokemon/'+str(self.pokemon_number)+'.png'
+        myfile = requests.get(self.pokemon_image)
         open ('temp.png','wb').write(myfile.content)
         image = Image.open('temp.png')
         
@@ -228,8 +228,6 @@ class PokemonNumSkill(MycroftSkill):
         
         # Display image.
         disp.image(image)
-
-
         
         #self.speak_dialog(dialog,n})
         # Start showing the remaining time on the faceplate
