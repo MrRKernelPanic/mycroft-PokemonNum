@@ -87,16 +87,16 @@ class PokemonNumSkill(MycroftSkill):
         #jprint(response.json())
         nme=resp.json()['name']
         #pokemon_name=self.__jprint(self, nme)
-        pname=json.dumps(nme, sort_keys=True, indent=4)
-        self.pokemon_name = pname
+        self.pokemon_namee=json.dumps(nme, sort_keys=True, indent=4)
+        #self.pokemon_name = pname
         #pokemon_name=pokemon_name.strip('\"')
-        self.speak_dialog('list.pokemon.name', data={"title": pname})
+        self.speak_dialog('list.pokemon.name', data={"title": self.pokemon_name})
         lcd_columns = 16
         lcd_rows = 2
         i2c = busio.I2C(board.SCL, board.SDA)
         lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
         lcd.color = [100, 0, 0]
-        lcd.message = "\nPokemon:" + str(num)
+        lcd.message = "\nPokemon:" + str(self.pokemon_number)
         lcd.message = str(pname).strip('\"')   
   
     
