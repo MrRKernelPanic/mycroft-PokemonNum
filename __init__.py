@@ -69,7 +69,7 @@ class PokemonNumSkill(MycroftSkill):
     
     
       
-    def update_disply(num,pokemon_name):
+    def update_disply(self, num, pokemon_name):
         lcd_columns = 16
         lcd_rows = 2
         i2c = busio.I2C(board.SCL, board.SDA)
@@ -150,7 +150,7 @@ class PokemonNumSkill(MycroftSkill):
 #               print (str(descr))
                     return str(descr)          
 
-        pokemon_description = get_description_en(, num)
+        pokemon_description = get_description_en(num)
         self.speak_dialog('list.pokemon.description', data={"desc": pokemon_description})
         
         # Configuration for CS and DC pins (these are PiTFT defaults):
