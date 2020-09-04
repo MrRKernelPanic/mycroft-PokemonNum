@@ -77,8 +77,7 @@ class PokemonNumSkill(MycroftSkill):
                     .require("Numz"))
     def handle_pokemon_number(self, message):
         """Tells the user what it's searching for"""
-        num = extract_number(message.data['utterance'])
-        self.pokemon_number = num
+        self.pokemon_number = extract_number(message.data['utterance'])
         self.speak_dialog('list.pokemon.number', data={'level': self.pokemon_number})             
         wait_while_speaking()
         
