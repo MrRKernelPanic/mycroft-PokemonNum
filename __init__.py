@@ -66,7 +66,26 @@ class PokemonNumSkill(MycroftSkill):
         # To prevent beeping while listening
         #lcd.color = [55, 0, 55]
         #lcd.message = "Hello\nCircuitPython"
+    
+    def get_description_en():
+        descriptions=response.json()["flavor_text_entries"]
+        for descriptions_data in descriptions:
+            descr=descriptions_data["flavor_text"]
+            region = descriptions_data["language"]
+            if 'en' in str(region):
+#               print (str(region))
+#               print (str(descr))
+                return str(descr)          
       
+    def update_disply(num,pokemon_name):
+        lcd_columns = 16
+        lcd_rows = 2
+        i2c = busio.I2C(board.SCL, board.SDA)
+        lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
+        lcd.color = [100, 0, 0]
+        lcd.message = "\nPokemon:" + str(num)
+        lcd.message = str(pokemon_name).strip('\"')
+    
     ######################################################################
     # INTENT HANDLERS
 
@@ -200,15 +219,7 @@ class PokemonNumSkill(MycroftSkill):
         # Display image.
         disp.image(image)
 
-    def get_description_en():
-        descriptions=response.json()["flavor_text_entries"]
-        for descriptions_data in descriptions:
-            descr=descriptions_data["flavor_text"]
-            region = descriptions_data["language"]
-            if 'en' in str(region):
-#               print (str(region))
-#               print (str(descr))
-                return str(descr)          
+
         
         #self.speak_dialog(dialog,n})
         # Start showing the remaining time on the faceplate
@@ -239,14 +250,7 @@ class PokemonNumSkill(MycroftSkill):
                 self.speak_dialog('list.pokemon.number', data={'level': temp[6]})
     
     
-    def update_disply(num,pokemon_name):
-        lcd_columns = 16
-        lcd_rows = 2
-        i2c = busio.I2C(board.SCL, board.SDA)
-        lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
-        lcd.color = [100, 0, 0]
-        lcd.message = "\nPokemon:" + str(num)
-        lcd.message = str(pokemon_name).strip('\"')
+    
     
     def stop(self):
         pass
