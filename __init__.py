@@ -90,7 +90,8 @@ class PokemonNumSkill(MycroftSkill):
         num = extract_number(message.data['utterance'])
         #lcd.message = num
         self.speak_dialog('list.pokemon.number', data={'level': num})             
-
+        wait_while_speaking()
+        
         #Tells the user the Pokemon
         resp = requests.get("https://pokeapi.co/api/v2/pokemon-form/"+str(num)+"/")
         #print(response.status_code)
@@ -129,6 +130,7 @@ class PokemonNumSkill(MycroftSkill):
         for i in range(0,len(typ)): 
             pokemon_type=pokemon_type + typ[i] + " and "
         pokemon_type = pokemon_type[:-5] + " Type"
+        wait_while_speaking()
         self.speak_dialog('list.pokemon.type', data={"typee": pokemon_type})   
         
         #Get the Pokemon Description
@@ -151,6 +153,7 @@ class PokemonNumSkill(MycroftSkill):
                     return str(descr)          
 
         pokemon_description = get_description_en(num)
+        wait_while_speaking()
         self.speak_dialog('list.pokemon.description', data={"desc": pokemon_description})
         
         # Configuration for CS and DC pins (these are PiTFT defaults):
