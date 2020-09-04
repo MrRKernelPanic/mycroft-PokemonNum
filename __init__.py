@@ -243,10 +243,11 @@ class PokemonNumSkill(MycroftSkill):
                     .require("Namez"))
     def handle_pokemon_name(self, message):
         """Tells the user what it's searching for"""
-        self.pokemon_number = message.data.get('Namez')
+        self.pokemon_name = message.data.get('Namez')
         #nme = (message.data['utterance'])
         #lcd.message = num
-        self.speak_dialog('list.pokemon.number', data={'level': self.pokemon_number})             
+        # N.B. Uses the same dialog for name and number introduction
+        self.speak_dialog('list.pokemon.number', data={'level': self.pokemon_name})             
         response = requests.get("http://pokeapi.co/api/v2/pokemon?limit=807")
         names=response.json()["results"]
         #print (d)
@@ -255,10 +256,8 @@ class PokemonNumSkill(MycroftSkill):
                 #self.speak('Found it')
             #if str(d['name']) == str(nme):
                 temp=str(d['url']).split("/")
-                self.pokemon_number=temp[6]
-                self.speak_dialog('list.pokemon.number', data={'level': temp[6]})
-    
-    
+                self.pokemon_number=str(temp[6])
+                self.speak_dialog('list.pokemon.number', data={'level': self.pokemon_number)   
     
     
     def stop(self):
