@@ -87,7 +87,7 @@ class PokemonNumSkill(MycroftSkill):
         #jprint(response.json())
         nme=resp.json()['name']
         #pokemon_name=self.__jprint(self, nme)
-        self.pokemon_namee=json.dumps(nme, sort_keys=True, indent=4)
+        self.pokemon_name=json.dumps(nme, sort_keys=True, indent=4)
         #self.pokemon_name = pname
         #pokemon_name=pokemon_name.strip('\"')
         self.speak_dialog('list.pokemon.name', data={"title": self.pokemon_name})
