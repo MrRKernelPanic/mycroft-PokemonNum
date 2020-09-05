@@ -117,8 +117,8 @@ class PokemonNumSkill(MycroftSkill):
             typ.append(temp)
         
         for i in range(0,len(typ)): 
-            ptype=ptype + typ[i] + " and "       
-        self.pokemon_type = ptype[:-5] + " Type"
+            self.pokemon_type=self.pokemon_type + typ[i] + " and "       
+        self.pokemon_type = self.pokemon_type[:-5] + " Type"
         wait_while_speaking()
         self.speak_dialog('list.pokemon.type', data={"typee": str(self.pokemon_type)}) 
     
