@@ -97,7 +97,7 @@ class PokemonNumSkill(MycroftSkill):
         lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
         lcd.color = [100, 0, 0]
         lcd.message = "\nPokemon:" + str(self.pokemon_number)
-        lcd.message = str(self.pokemon_name).strip('\"')   
+        #lcd.message = str(self.pokemon_name).strip('\"')   
   
     
     def stop(self):
