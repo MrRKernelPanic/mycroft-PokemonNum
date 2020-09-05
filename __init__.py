@@ -48,6 +48,10 @@ class PokemonNumSkill(MycroftSkill):
         self.pokemon_description = ""
         self.pokemon_type = ""
         self.pokemon_image = ""
+        lcd_columns = 16
+        lcd_rows = 2
+        i2c = busio.I2C(board.SCL, board.SDA)
+        lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
     
     def initialize(self):
         for i in range(808):  # numbers 0 to 100
@@ -91,10 +95,10 @@ class PokemonNumSkill(MycroftSkill):
         #self.pokemon_name = pname
         #pokemon_name=pokemon_name.strip('\"')
         self.speak_dialog('list.pokemon.name', data={"title": str(self.pokemon_name)})
-        lcd_columns = 16
-        lcd_rows = 2
-        i2c = busio.I2C(board.SCL, board.SDA)
-        lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
+        #lcd_columns = 16
+        #lcd_rows = 2
+        #i2c = busio.I2C(board.SCL, board.SDA)
+        #lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
         lcd.color = [100, 0, 0]
         lcd.message = "\nPokemon:" + str(self.pokemon_number).strip('\"') 
         #lcd.message = str(self.pokemon_name)  
