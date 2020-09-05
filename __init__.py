@@ -100,7 +100,28 @@ class PokemonNumSkill(MycroftSkill):
         self.lcd.color = [100, 0, 0]
         self.lcd.message = "\nPokemon:" + str(self.pokemon_number)
         self.lcd.message = str(self.pokemon_name).strip('\"')   
-  
+
+#       update_display(num,pokemon_name)
+        #Get the Pokemon Type
+        response = requests.get("https://pokeapi.co/api/v2/pokemon/"+str(self.pokemon_number)+"/")
+        types=response.json()["types"]
+        ttyp=[]
+        typ=[]
+        #gets the details of all the types in ttyp list
+        for d in types:
+            temp=d["type"]
+            ttyp.append(temp)
+        #gets the names of the types in typ list.
+        for d in ttyp:
+            temp=d["name"]
+            typ.append(temp)
+        
+        for i in range(0,len(typ)): 
+            ptype=ptype + typ[i] + " and "       
+        ptype= ptype[:-5] + " Type"
+        wait_while_speaking()
+        self.pokemon_type = ptype
+        self.speak_dialog('list.pokemon.type', data={"typee": self.pokemon_type}) 
     
     def stop(self):
         pass
