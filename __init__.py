@@ -41,8 +41,6 @@ class PokemonNumSkill(MycroftSkill):
  
     def __init__(self):
         super(PokemonNumSkill, self).__init__("PokemonNumSkill")
-        #self.sound_file = join(abspath(dirname(__file__)), 'snd','twoBeep.wav')
-        #self.threshold = 0.7
         self.pokemon_name = ""
         self.pokemon_number = 0
         self.pokemon_description = ""
@@ -90,9 +88,7 @@ class PokemonNumSkill(MycroftSkill):
         nme=resp.json()['name']
         #pokemon_name=self.__jprint(self, nme)
         self.pokemon_name=json.dumps(nme, sort_keys=True, indent=4)
-        #self.pokemon_name = pname
-        #pokemon_name=pokemon_name.strip('\"')
-        self.speak_dialog('list.pokemon.name', data={"title": str(self.pokemon_name)})
+        self.speak_dialog('list.pokemon.name', data={"title": self.pokemon_name})
         #lcd_columns = 16
         #lcd_rows = 2
         #i2c = busio.I2C(board.SCL, board.SDA)
