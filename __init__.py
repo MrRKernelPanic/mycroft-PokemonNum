@@ -107,20 +107,7 @@ class PokemonNumSkill(MycroftSkill):
         types=response.json()["types"]
         ttyp=[]
         typ=[]
-        #gets the details of all the types in ttyp list
-        for d in types:
-            temp=d["type"]
-            ttyp.append(temp)
-        #gets the names of the types in typ list.
-        for d in ttyp:
-            temp=d["name"]
-            typ.append(temp)
         
-        for i in range(0,len(typ)): 
-            self.pokemon_type=self.pokemon_type + typ[i] + " and "       
-        self.pokemon_type = self.pokemon_type[:-5] + " Type"
-        wait_while_speaking()
-        self.speak_dialog('list.pokemon.type', data={"typee": str(self.pokemon_type)}) 
     
     def stop(self):
         pass
