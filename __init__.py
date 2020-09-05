@@ -102,12 +102,7 @@ class PokemonNumSkill(MycroftSkill):
         self.lcd.message = str(self.pokemon_name).strip('\"')   
 
 #       update_display(num,pokemon_name)
-        #Get the Pokemon Type
-        response = requests.get("https://pokeapi.co/api/v2/pokemon/"+str(self.pokemon_number)+"/")
-        types=response.json()["types"]
-        ttyp=[]
-        typ=[]
-        
+        #Get the Pokemon Type        
     
     def stop(self):
         pass
