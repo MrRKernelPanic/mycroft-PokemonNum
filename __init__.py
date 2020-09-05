@@ -49,7 +49,7 @@ class PokemonNumSkill(MycroftSkill):
         self.pokemon_type = ""
         self.pokemon_image = ""
         self.i2c = busio.I2C(board.SCL, board.SDA)
-        self.lcd = character_lcd.Character_LCD_RGB_I2C(i2c, 16, 2)
+        self.lcd = character_lcd.Character_LCD_RGB_I2C(self.i2c, 16, 2)
     
     def initialize(self):
         for i in range(808):  # numbers 0 to 100
