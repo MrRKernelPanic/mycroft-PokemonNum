@@ -90,7 +90,7 @@ class PokemonNumSkill(MycroftSkill):
         self.pokemon_name=json.dumps(nme, sort_keys=True, indent=4)
         #self.pokemon_name = pname
         #pokemon_name=pokemon_name.strip('\"')
-        self.speak_dialog('list.pokemon.name', data={"title": self.pokemon_name})
+        self.speak_dialog('list.pokemon.name', data={"title": str(self.pokemon_name)})
         lcd_columns = 16
         lcd_rows = 2
         i2c = busio.I2C(board.SCL, board.SDA)
