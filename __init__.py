@@ -213,7 +213,7 @@ class PokemonNumSkill(MycroftSkill):
                 #self.speak('Found it')
             #if str(d['name']) == str(nme):
                 temp=str(d['url']).split("/")
-                self.pokemon_number=str(temp[6])
+                self.pokemon_number=int(temp[6])
                 wait_while_speaking()
                 self.speak_dialog('list.pokemon.number', data={'level': self.pokemon_number)   
                 self.update_display()
