@@ -119,6 +119,7 @@ class PokemonNumSkill(MycroftSkill):
 #       update_display(num,pokemon_name)
     def get_pokemon_type(self):
         #Get the Pokemon Type
+        self.pokemon_type = ""
         response = requests.get("https://pokeapi.co/api/v2/pokemon/"+str(self.pokemon_number)+"/")
         types=response.json()["types"]
         ttyp=[]
