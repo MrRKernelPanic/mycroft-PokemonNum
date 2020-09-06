@@ -87,9 +87,6 @@ class PokemonNumSkill(MycroftSkill):
         draw = ImageDraw.Draw(self.image)
         draw.rectangle((0, 0, self.width, self.height), outline=0, fill=(0, 0, 0))
         self.disp.image(self.image)
-        
-        
-        
     
     def initialize(self):
         for i in range(808):  # numbers 0 to 100
@@ -101,10 +98,6 @@ class PokemonNumSkill(MycroftSkill):
             self.register_vocabulary(str(d['name']), 'Namez')
         #This will try matching to the string and print out the Pokeindex
     
-    def clear_tft_screen(self):
-        # Draw a black filled box to clear the image.
-
-        
     def update_display(self):
         self.lcd.color = [100, 0, 0]
         self.lcd.message = "\nPokemon:" + str(self.pokemon_number)
@@ -190,11 +183,11 @@ class PokemonNumSkill(MycroftSkill):
         else:
             self.width = self.disp.width  # we swap height/width to rotate it to landscape!
             self.height = self.disp.height
-        self.image = Image.new("RGB", (self.width, self.height))
+        image = Image.new("RGB", (self.width, self.height))
         # Get drawing object to draw on image.
-        draw = ImageDraw.Draw(self.image)
+        draw = ImageDraw.Draw(image)
         draw.rectangle((0, 0, self.width, self.height), outline=0, fill=(0, 0, 0))
-        self.disp.image(self.image)
+        self.disp.image(image)
     
     
     ######################################################################
