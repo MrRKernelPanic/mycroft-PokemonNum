@@ -58,13 +58,13 @@ class PokemonNumSkill(MycroftSkill):
         self.BAUDRATE = 24000000
 
         # Setup SPI bus using hardware SPI:
-        spi = board.SPI()
+        self.spi = board.SPI()
 
         # pylint: disable=line-too-long
         # Create the display:
 
         self.disp = st7735.ST7735R(
-            spi, 
+            self.spi, 
             rotation=270, 
             height=128, 
             x_offset=2, 
@@ -82,14 +82,14 @@ class PokemonNumSkill(MycroftSkill):
         else:
             self.width = self.disp.width  # we swap height/width to rotate it to landscape!
             self.height = self.disp.height
-        self.image = Image.new("RGB", (width, height))
+        self.image = Image.new("RGB", (self.width, self.height))
         
         # Get drawing object to draw on image.
         draw = ImageDraw.Draw(self.image)
         
         # Draw a black filled box to clear the image.
         draw.rectangle((0, 0, self.width, self.height), outline=0, fill=(0, 0, 0))
-        self.disp.image(image)
+        self.disp.image(self.image)
         
         
     
