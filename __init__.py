@@ -62,7 +62,6 @@ class PokemonNumSkill(MycroftSkill):
 
         # pylint: disable=line-too-long
         # Create the display:
-
         self.disp = st7735.ST7735R(
             self.spi, 
             rotation=270, 
@@ -86,7 +85,9 @@ class PokemonNumSkill(MycroftSkill):
         
         # Get drawing object to draw on image.
         draw = ImageDraw.Draw(self.image)
-        self.clear_tft_screen()
+        draw.rectangle((0, 0, self.width, self.height), outline=0, fill=(0, 0, 0))
+        self.disp.image(self.image)
+        
         
         
     
@@ -102,8 +103,7 @@ class PokemonNumSkill(MycroftSkill):
     
     def clear_tft_screen(self):
         # Draw a black filled box to clear the image.
-        draw.rectangle((0, 0, self.width, self.height), outline=0, fill=(0, 0, 0))
-        self.disp.image(self.image)
+
         
     def update_display(self):
         self.lcd.color = [100, 0, 0]
@@ -158,7 +158,7 @@ class PokemonNumSkill(MycroftSkill):
                 self.speak_dialog('list.pokemon.description', data={"desc": self.pokemon_description})
                 return    
 
-    def get_pimage(self,cflag):
+    def get_pimage(self):
         self.pokemon_image = 'https://pokeres.bastionbot.org/images/pokemon/'+str(self.pokemon_number)+'.png'
         myfile = requests.get(self.pokemon_image)
         open('temp.png','wb').write(myfile.content)
@@ -182,6 +182,19 @@ class PokemonNumSkill(MycroftSkill):
         # Display image.
         self.disp.image(image)
     
+    def clear_pimage(self):
+        # Make sure to create image with mode 'RGB' for full color.
+        if self.disp.rotation % 180 == 90:
+            self.height = self.disp.width  # we swap height/width to rotate it to landscape!
+            self.width = self.disp.height
+        else:
+            self.width = self.disp.width  # we swap height/width to rotate it to landscape!
+            self.height = self.disp.height
+        self.image = Image.new("RGB", (self.width, self.height))
+        # Get drawing object to draw on image.
+        draw = ImageDraw.Draw(self.image)
+        draw.rectangle((0, 0, self.width, self.height), outline=0, fill=(0, 0, 0))
+        self.disp.image(self.image)
     
     
     ######################################################################
@@ -192,7 +205,7 @@ class PokemonNumSkill(MycroftSkill):
                     .require("Numz"))
     def handle_pokemon_number(self, message):
         """Tells the user what it's searching for"""
-        self.clear_tft_screen()
+        self.clear_pimage()
         self.pokemon_number = extract_number(message.data['utterance'])
         self.speak_dialog('list.pokemon.number', data={'level': self.pokemon_number})             
         wait_while_speaking()
