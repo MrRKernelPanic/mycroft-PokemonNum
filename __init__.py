@@ -100,7 +100,7 @@ class PokemonNumSkill(MycroftSkill):
             self.register_vocabulary(str(d['name']), 'Namez')
         #This will try matching to the string and print out the Pokeindex
     
-    def clear_tft_screen(self)
+    def clear_tft_screen(self):
         # Draw a black filled box to clear the image.
         draw.rectangle((0, 0, self.width, self.height), outline=0, fill=(0, 0, 0))
         self.disp.image(self.image)
