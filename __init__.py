@@ -57,7 +57,8 @@ class PokemonNumSkill(MycroftSkill):
         #This bit gets ALL the pokemon names.
             self.register_vocabulary(str(d['name']), 'Namez')
         #This will try matching to the string and print out the Pokeindex
-        def get_pokemon_name(self)
+    
+    def get_pokemon_name(self):
         #Tells the user the Pokemon
         resp = requests.get("https://pokeapi.co/api/v2/pokemon-form/"+str(self.pokemon_number)+"/")
         nme=resp.json()['name']
@@ -68,7 +69,7 @@ class PokemonNumSkill(MycroftSkill):
         self.lcd.message = str(self.pokemon_name).strip('\"')   
 
 #       update_display(num,pokemon_name)
-    def get_pokemon_type(self)    
+    def get_pokemon_type(self):
         #Get the Pokemon Type
         response = requests.get("https://pokeapi.co/api/v2/pokemon/"+str(self.pokemon_number)+"/")
         types=response.json()["types"]
