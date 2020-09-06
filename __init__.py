@@ -103,15 +103,18 @@ class PokemonNumSkill(MycroftSkill):
             self.register_vocabulary(str(d['name']), 'Namez')
         #This will try matching to the string and print out the Pokeindex
     
+    def update_display(self):
+        self.lcd.color = [100, 0, 0]
+        self.lcd.message = "\nPokemon:" + str(self.pokemon_number)
+        self.lcd.message = str(self.pokemon_name).strip('\"')   
+    
     def get_pokemon_name(self):
         #Tells the user the Pokemon
         resp = requests.get("https://pokeapi.co/api/v2/pokemon-form/"+str(self.pokemon_number)+"/")
         nme=resp.json()['name']
         self.pokemon_name=json.dumps(nme, sort_keys=True, indent=4)
         self.speak_dialog('list.pokemon.name', data={"title": self.pokemon_name})
-        self.lcd.color = [100, 0, 0]
-        self.lcd.message = "\nPokemon:" + str(self.pokemon_number)
-        self.lcd.message = str(self.pokemon_name).strip('\"')   
+        self.update_display()
 
 #       update_display(num,pokemon_name)
     def get_pokemon_type(self):
@@ -192,7 +195,32 @@ class PokemonNumSkill(MycroftSkill):
         self.get_pokemon_type()
         self.get_pdescription_en()
         self.get_pimage()
-           
+    
+    @intent_handler(IntentBuilder("PokemonName").require("Pokemon")
+                    .require("Namez"))
+    def handle_pokemon_name(self, message):
+        """Tells the user what it's searching for"""
+        self.pokemon_name = message.data.get('Namez')
+        #nme = (message.data['utterance'])
+        #lcd.message = num
+        # N.B. Uses the same dialog for name and number introduction
+        self.speak_dialog('list.pokemon.number', data={'level': self.pokemon_name})             
+        response = requests.get("http://pokeapi.co/api/v2/pokemon?limit=807")
+        names=response.json()["results"]
+        #print (d)
+        for d in names:
+            if str(d['name']) == self.pokemon_name:
+                #self.speak('Found it')
+            #if str(d['name']) == str(nme):
+                temp=str(d['url']).split("/")
+                self.pokemon_number=str(temp[6])
+                wait_while_speaking()
+                self.speak_dialog('list.pokemon.number', data={'level': self.pokemon_number)   
+                self.update_display()
+                self.get_pokemon_type()
+                self.get_pdescription_en()
+                self.get_pimage()
+                                                               
     def stop(self):
         pass
 
