@@ -79,24 +79,22 @@ class PokemonNumSkill(MycroftSkill):
         self.pokemon_number = extract_number(message.data['utterance'])
         self.speak_dialog('list.pokemon.number', data={'level': self.pokemon_number})             
         wait_while_speaking()
-      
+        get_pokemon_name()
+        get_pokemon_type()
+        get_pdescription_en()
+    
+    def get_pokemon_name()
         #Tells the user the Pokemon
         resp = requests.get("https://pokeapi.co/api/v2/pokemon-form/"+str(self.pokemon_number)+"/")
-        #print(response.status_code)
-        #jprint(response.json())
         nme=resp.json()['name']
-        #pokemon_name=self.__jprint(self, nme)
         self.pokemon_name=json.dumps(nme, sort_keys=True, indent=4)
         self.speak_dialog('list.pokemon.name', data={"title": self.pokemon_name})
-        #lcd_columns = 16
-        #lcd_rows = 2
-        #i2c = busio.I2C(board.SCL, board.SDA)
-        #lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
         self.lcd.color = [100, 0, 0]
         self.lcd.message = "\nPokemon:" + str(self.pokemon_number)
         self.lcd.message = str(self.pokemon_name).strip('\"')   
 
 #       update_display(num,pokemon_name)
+    def get_pokemon_type()    
         #Get the Pokemon Type
         response = requests.get("https://pokeapi.co/api/v2/pokemon/"+str(self.pokemon_number)+"/")
         types=response.json()["types"]
@@ -116,7 +114,23 @@ class PokemonNumSkill(MycroftSkill):
         self.pokemon_type= self.pokemon_type[:-5] + " Type"
         wait_while_speaking()
         self.speak_dialog('list.pokemon.type', data={"typee": self.pokemon_type}) 
-    
+        
+        #Get the Pokemon Description
+
+    def get_pdescription_en():
+        response = requests.get("https://pokeapi.co/api/v2/pokemon-species/"+str(self.pokemon_number)+"/")
+        descriptions=response.json()["flavor_text_entries"]
+        for descriptions_data in descriptions:
+            descr=descriptions_data["flavor_text"]
+            region = descriptions_data["language"]
+            if 'en' in str(region):
+#               print (str(region))
+#               print (str(descr))
+                self.pokemon_description =str(descr)
+                wait_while_speaking()
+                self.speak_dialog('list.pokemon.description', data={"desc": self.pokemon_description})
+                return
+        
     def stop(self):
         pass
 
