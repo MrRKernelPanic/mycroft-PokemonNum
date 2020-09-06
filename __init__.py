@@ -196,6 +196,15 @@ class PokemonNumSkill(MycroftSkill):
         self.get_pdescription_en()
         self.get_pimage()
     
+    @intent_handler(IntentBuilder("PokemonName").require("Pokemon")
+                    .require("Namez"))
+    def handle_pokemon_name(self, message):
+        """Tells the user what it's searching for"""
+        self.pokemon_name = message.data.get('Namez')
+        #nme = (message.data['utterance'])
+        #lcd.message = num
+        # N.B. Uses the same dialog for name and number introduction
+        self.speak_dialog('list.pokemon.number', data={'level': self.pokemon_name})   
    
                                                                
     def stop(self):
