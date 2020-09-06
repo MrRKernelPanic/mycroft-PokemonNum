@@ -205,7 +205,19 @@ class PokemonNumSkill(MycroftSkill):
         #lcd.message = num
         # N.B. Uses the same dialog for name and number introduction
         self.speak_dialog('list.pokemon.number', data={'level': self.pokemon_name})   
-   
+        response = requests.get("http://pokeapi.co/api/v2/pokemon?limit=807")
+        names=response.json()["results"]
+        for d in names:
+            if str(d['name']) == self.pokemon_name:
+                temp=str(d['url']).split("/")
+                #print (int(temp[6])) 
+                self.pokemon_number=int(temp[6])
+                wait_while_speaking()
+                self.speak_dialog('list.pokemon.number', data={'level': self.pokemon_number})   
+                self.update_display()
+                self.get_pokemon_type()
+                self.get_pdescription_en()
+                self.get_pimage()
                                                                
     def stop(self):
         pass
