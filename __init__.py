@@ -47,6 +47,51 @@ class PokemonNumSkill(MycroftSkill):
         self.pokemon_image = ""
         self.i2c = busio.I2C(board.SCL, board.SDA)
         self.lcd = character_lcd.Character_LCD_RGB_I2C(self.i2c, 16, 2)
+        self.lcd.clear()
+        
+         # Configuration for CS and DC pins (these are PiTFT defaults):
+        self.cs_pin = digitalio.DigitalInOut(board.CE0)
+        self.dc_pin = digitalio.DigitalInOut(board.D17)
+        self.reset_pin = digitalio.DigitalInOut(board.D4)
+
+        # Config for display baudrate (default max is 24mhz):
+        self.BAUDRATE = 24000000
+
+        # Setup SPI bus using hardware SPI:
+        spi = board.SPI()
+
+        # pylint: disable=line-too-long
+        # Create the display:
+
+        self.disp = st7735.ST7735R(
+            spi, 
+            rotation=270, 
+            height=128, 
+            x_offset=2, 
+            y_offset=3,
+            cs=self.cs_pin,
+            dc=self.dc_pin,
+            rst=self.reset_pin,
+            baudrate=self.BAUDRATE,
+        )
+        
+        # Make sure to create image with mode 'RGB' for full color.
+        if self.disp.rotation % 180 == 90:
+            self.height = self.disp.width  # we swap height/width to rotate it to landscape!
+            self.width = self.disp.height
+        else:
+            self.width = self.disp.width  # we swap height/width to rotate it to landscape!
+            self.height = self.disp.height
+        self.image = Image.new("RGB", (width, height))
+        
+        # Get drawing object to draw on image.
+        draw = ImageDraw.Draw(self.image)
+        
+        # Draw a black filled box to clear the image.
+        draw.rectangle((0, 0, self.width, self.height), outline=0, fill=(0, 0, 0))
+        self.disp.image(image)
+        
+        
     
     def initialize(self):
         for i in range(808):  # numbers 0 to 100
@@ -105,15 +150,32 @@ class PokemonNumSkill(MycroftSkill):
                 wait_while_speaking()
                 self.speak_dialog('list.pokemon.description', data={"desc": self.pokemon_description})
                 return    
-    #This is not working yet.  
-    #def update_disply(self, num, pokemon_name):
-    #    lcd_columns = 16
-    #    lcd_rows = 2
-    #    i2c = busio.I2C(board.SCL, board.SDA)
-    #    lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
-    #    lcd.color = [100, 0, 0]
-    #    lcd.message = "\nPokemon:" + str(num)
-    #    lcd.message = str(pokemon_name).strip('\"')
+
+    def get_pimage(self):
+        self.pokemon_image = 'https://pokeres.bastionbot.org/images/pokemon/'+str(self.pokemon_number)+'.png'
+        myfile = requests.get(self.pokemon_image)
+        open('temp.png','wb').write(myfile.content)
+        image = Image.open('temp.png')
+        
+        # Scale the image to the smaller screen dimension
+        image_ratio = image.width / image.height
+        screen_ratio = self.width / self.height
+        if screen_ratio < image_ratio:
+            scaled_width = image.width * self.height // image.height
+            scaled_height = self.height
+        else:
+            scaled_width = self.width
+            scaled_height = image.height * self.width // image.width
+        image = image.resize((scaled_width, scaled_height), Image.BICUBIC)
+        
+        # Crop and center the image
+        x = scaled_width // 2 - self.width // 2
+        y = scaled_height // 2 - self.height // 2
+        image = image.crop((x, y, x + self.width, y + self.height))
+        # Display image.
+        self.disp.image(image)
+    
+    
     
     ######################################################################
     # INTENT HANDLERS
@@ -129,6 +191,7 @@ class PokemonNumSkill(MycroftSkill):
         self.get_pokemon_name()
         self.get_pokemon_type()
         self.get_pdescription_en()
+        self.get_pimage()
            
     def stop(self):
         pass
