@@ -86,10 +86,7 @@ class PokemonNumSkill(MycroftSkill):
         
         # Get drawing object to draw on image.
         draw = ImageDraw.Draw(self.image)
-        
-        # Draw a black filled box to clear the image.
-        draw.rectangle((0, 0, self.width, self.height), outline=0, fill=(0, 0, 0))
-        self.disp.image(self.image)
+        self.clear_tft_screen(self)
         
         
     
@@ -103,6 +100,11 @@ class PokemonNumSkill(MycroftSkill):
             self.register_vocabulary(str(d['name']), 'Namez')
         #This will try matching to the string and print out the Pokeindex
     
+    def clear_tft_screen(self)
+        # Draw a black filled box to clear the image.
+        draw.rectangle((0, 0, self.width, self.height), outline=0, fill=(0, 0, 0))
+        self.disp.image(self.image)
+        
     def update_display(self):
         self.lcd.color = [100, 0, 0]
         self.lcd.message = "\nPokemon:" + str(self.pokemon_number)
@@ -110,6 +112,7 @@ class PokemonNumSkill(MycroftSkill):
     
     def get_pokemon_name(self):
         #Tells the user the Pokemon
+        self.lcd.clear()
         resp = requests.get("https://pokeapi.co/api/v2/pokemon-form/"+str(self.pokemon_number)+"/")
         nme=resp.json()['name']
         self.pokemon_name=json.dumps(nme, sort_keys=True, indent=4)
@@ -155,7 +158,7 @@ class PokemonNumSkill(MycroftSkill):
                 self.speak_dialog('list.pokemon.description', data={"desc": self.pokemon_description})
                 return    
 
-    def get_pimage(self):
+    def get_pimage(self,cflag):
         self.pokemon_image = 'https://pokeres.bastionbot.org/images/pokemon/'+str(self.pokemon_number)+'.png'
         myfile = requests.get(self.pokemon_image)
         open('temp.png','wb').write(myfile.content)
@@ -189,6 +192,7 @@ class PokemonNumSkill(MycroftSkill):
                     .require("Numz"))
     def handle_pokemon_number(self, message):
         """Tells the user what it's searching for"""
+        self.clear_tft_screen(self)
         self.pokemon_number = extract_number(message.data['utterance'])
         self.speak_dialog('list.pokemon.number', data={'level': self.pokemon_number})             
         wait_while_speaking()
