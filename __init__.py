@@ -25,7 +25,6 @@ import requests
 
 
 from os.path import join, isfile, abspath, dirname
-#from num2words import num2words
 from adapt.intent import IntentBuilder
 from mycroft.audio import wait_while_speaking
 from mycroft.messagebus.message import Message
@@ -98,7 +97,21 @@ class PokemonNumSkill(MycroftSkill):
         self.lcd.message = str(self.pokemon_name).strip('\"')   
 
 #       update_display(num,pokemon_name)
-        #Get the Pokemon Type        
+        #Get the Pokemon Type
+        #gets the details of all the types in ttyp list
+        for d in types:
+            temp=d["type"]
+            ttyp.append(temp)
+        #gets the names of the types in typ list.
+        for d in ttyp:
+            temp=d["name"]
+            typ.append(temp)
+        
+        for i in range(0,len(typ)): 
+            self.pokemon.type=self.pokemon.type + typ[i] + " and "       
+        self.pokemon.type= self.pokemon.type[:-5] + " Type"
+        wait_while_speaking()
+        self.speak_dialog('list.pokemon.type', data={"typee": self.pokemon.type}) 
     
     def stop(self):
         pass
